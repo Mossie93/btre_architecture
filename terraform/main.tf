@@ -30,3 +30,33 @@ resource "digitalocean_droplet" "webserver" {
   tags = [digitalocean_tag.webserver.id, digitalocean_tag.env.id]
   ssh_keys = var.ssh_fingerprints
 }
+
+resource "digitalocean_firewall" "webserver" {
+  name = "webserver-firewall"
+  droplet_ids = [digitalocean_droplet.webserver.id]
+
+  inbound_rule {
+    protocol = "tcp"
+    port_range = "22"
+  }
+
+  inbound_rule {
+    protocol = "tcp"
+    port_range = "80"
+  }
+
+  inbound_rule {
+    protocol = "tcp"
+    port_range = "443"
+  }
+
+  outbound_rule {
+    protocol = "tcp"
+    port_range = "53"
+  }
+
+  outbound_rule {
+    protocol = "udp"
+    port_range = "53"
+  }
+}
