@@ -60,3 +60,8 @@ resource "digitalocean_firewall" "webserver" {
     port_range = "53"
   }
 }
+
+output "ip_address" {
+  value       = digitalocean_droplet.webserver.ipv4_address
+  description = "IP address of provisioned droplet"
+}
