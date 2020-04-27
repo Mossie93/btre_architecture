@@ -1,2 +1,21 @@
 ---
-- name: install gunicorn
+- name: Pull btre_project from github
+  repo:
+  dest:
+- name: Ensure btre_project belongs to app user
+  file:
+    name: /home/app/btre_project
+    owner: app
+    state: directory
+- name: Change working directory
+- name: Install gunicorn
+  pip:
+    name: gunicorn
+- name: Create virtualenv
+- name: Activate virtualenv
+- name: Install requirements
+- name: Upload settings file
+- name: Create migrations
+- name: Run migrations
+- name: Create static files
+
