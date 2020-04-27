@@ -1,0 +1,5 @@
+admin_user:                     SECRET
+admin_user_private_key_path:    SECRET
+admin_user_public_ssh_key_path: SECRET
+app_user_public_ssh_key_path:   SECRET
+root_user_private_key_path:     SECRET

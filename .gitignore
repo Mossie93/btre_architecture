@@ -3,3 +3,4 @@
 *.ini
 *hosts
 ansible/roles/postgres/vars/main.yml
+ansible/production/host_vars/webservers.yml
