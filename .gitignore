@@ -1,2 +1,5 @@
 *.tfvars
 *.terraform
+*.ini
+*hosts
+ansible/roles/postgres/vars/main.yml
