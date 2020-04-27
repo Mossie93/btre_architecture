@@ -1,0 +1,46 @@
+---
+- name: Create postgres user
+  user:
+    name: postgres
+    create_home: no
+- name: Add PostgreSQL 11 apt key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+- name: Add PostgreSQL 11 apt repo
+  apt_repository:
+    repo: http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
+    state: present
+- name: Install postgres
+  apt:
+    name: {{ item }}
+    state: present
+    update_cache: yes
+  with_items:
+    - postgresql-11
+    - postgresql-contrib
+    - libpq-dev
+    - python-psycopg2
+- name: Ensure postgres is started and enabled
+  service:
+    name: postgres
+    state: started
+    enabled: yes
+- name: Prepare database
+  sudo_user: postgres
+  postgresql_db:
+    name: {{ db_name }}
+- name: Ensure user has access to the database
+  sudo_user: postgres
+  postgresql_user:
+    db: {{ db_name }}
+    name: {{ db_username }}
+    password: {{ db_password }}
+    priv: ALL
+    state: present
+- name: Ensure user has no excess DB priveleges
+  sudo_user: postgres
+  postgresql_user:
+    name: {{ db_user }}
+    role_attr_flags: NOSUPERUSER,NOCREATEDB
+    state: present
