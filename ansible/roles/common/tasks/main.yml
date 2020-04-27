@@ -1,0 +1,72 @@
+---
+- name: Install packages
+  apt:
+    name: {{ item }}
+    state: present
+    update_cache: yes
+  with_items:
+    - python3-pip
+    - python3-dev
+    - python3-venv
+    - libpq-dev
+    - curl
+- name: Create app user
+  user:
+    name: app
+    shell: /bin/bash
+- name: Upload app SSH key
+  authorized_key:
+    user: app
+    state: present
+    key: {{ app_user_public_ssh_key_path }}
+- name: Create group admins
+  group:
+    name: admins
+    state: present
+- name: Add admin user
+  user:
+    name: moss
+    shell: /bin/bash
+    groups: admins,sudo
+    append: yes
+- name: Upload admin SSH key
+  authorized_key:
+    user: {{ admin_user }}
+    state: present
+    key: {{ admin_user_public_ssh_key_path }}
+- name: Allow admin to use passwordless sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%admins ALL='
+    line: '%admins ALL=(ALL) NOPASSWD: ALL'
+    validate: /usr/sbin/visudo -cf %s
+- name: Firewall - allow SSH
+  ufw:
+    rule: allow
+    name: '22'
+- name: Firewall - allow HTTP
+  ufw:
+    rule: allow
+    port: '80'
+- name: Firewall - allow HTTPS
+  ufw:
+    rule: allow
+    port: '443'
+- name: Firewall - allow PostgreSQL from localhost
+  ufw:
+    rule: allow
+    src: '127.0.0.1'
+    port: '5432'
+- name: Firewall - deny all access to port 53
+  ufw:
+    rule: deny
+    port: '53'
+# - name: Disallow root SSH access
+#   lineinfile: 
+#     dest: /etc/ssh/sshd_config
+#     regexp: "^PermitRootLogin"
+#     line: "PermitRootLogin no"
+#     state: present
+#   notify: Restart ssh
+

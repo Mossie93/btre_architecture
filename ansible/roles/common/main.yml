@@ -1,6 +1,0 @@
----
-- name: Create app user
-  user:
-    name: app
-    shell: /bin/bash
-
