@@ -10,6 +10,13 @@
   template:
     src: btre_project.j2
     dest: /etc/nginx/sites-available/btre_project
+- name: change client_max_body_size in main nginx.conf
+  lineinfile:
+    dest: "/etc/nginx/nginx.conf"
+    regexp: '^\s*client_max_body_size'
+    line: "    client_max_body_size 20M;"
+    insertafter: "http {"
+  notify: Restart nginx
 - name: Link sites-available to sites-enabled
   file:
     src: /etc/nginx/sites-available/btre_project
