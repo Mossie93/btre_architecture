@@ -1,0 +1,19 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+  notify:
+    - Enable nginx
+- name: Add sites-available config
+  template:
+    src: btre_project.j2
+    dest: /etc/nginx/sites-available/btre_project
+- name: Link sites-available to sites-enabled
+  file:
+    src: /etc/nginx/sites-available/btre_project
+    dest: /etc/nginx/sites-enabled/btre_project
+    state: link
+  notify:
+    - Restart nginx
