@@ -1,5 +1,18 @@
-SECRET_KEY
-ALLOWED_HOSTS
-DATABASES
-DEBUG
-EMAIL_*
+SECRET_KEY = "SECRET"
+ALLOWED_HOSTS = ["127.0.0.1", "{{ansible_eth0.ipv4.address}}"]
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': 'SECRET',
+    'USER': 'SECRET',
+    'PASSWORD': 'SECRET',
+    'HOST': "SECRET"
+  }
+}
+DEBUG = False
+EMAIL_HOST = "SECRET"
+EMAIL_PORT = "SECRET"
+EMAIL_HOST_USER = "SECRET"
+EMAIL_HOST_PASSWORD = "SECRET"
+EMAIL_USE_TLS = True
+EMAIL_ENABLED = False
