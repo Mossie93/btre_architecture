@@ -18,23 +18,26 @@
     update_cache: yes
 - name: Ensure postgres is started and enabled
   service:
-    name: postgres
+    name: postgresql
     state: started
     enabled: yes
 - name: Prepare database
-  sudo_user: postgres
+  become: yes
+  become_user: postgres
   postgresql_db:
     name: "{{ db_name }}"
 - name: Ensure user has access to the database
-  sudo_user: postgres
+  become: yes
+  become_user: postgres
   postgresql_user:
     db: "{{ db_name }}"
-    name: "{{ db_username }}"
+    name: "{{ db_user }}"
     password: "{{ db_password }}"
     priv: ALL
     state: present
 - name: Ensure user has no excess DB priveleges
-  sudo_user: postgres
+  become: yes
+  become_user: postgres
   postgresql_user:
     name: "{{ db_user }}"
     role_attr_flags: NOSUPERUSER,NOCREATEDB
