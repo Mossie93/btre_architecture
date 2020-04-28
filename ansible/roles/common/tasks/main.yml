@@ -48,7 +48,7 @@
 - name: Firewall - allow SSH
   ufw:
     rule: allow
-    name: '22'
+    port: '22'
 - name: Firewall - allow HTTP
   ufw:
     rule: allow
