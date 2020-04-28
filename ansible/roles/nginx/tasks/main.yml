@@ -24,3 +24,13 @@
     state: link
   notify:
     - Restart nginx
+- name: Remove default site from sites-enabled
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify:
+    - Restart nginx
+- name: Remove default site from sites-available
+  file:
+    path: /etc/nginx/sites-available/default
+    state: absent
