@@ -33,4 +33,10 @@
   command: python manage.py collectstatic
   args:
     chdir: /home/app/btre_project
+- name: Start gunicorn
+  command: systemctl start gunicorn.socket
+  become: yes
+- name: Enable gunicorn
+  command: systemctl enable gunicorn.socket
+  become: yes
 
