@@ -5,5 +5,5 @@
 *.ini
 *hosts
 ansible/roles/postgres/vars/main.yml
-ansible/production/host_vars/webservers.yml
+ansible/production/group_vars/webservers.yml
 ansible/roles/gunicorn/templates/local_settings.py copy.j2
