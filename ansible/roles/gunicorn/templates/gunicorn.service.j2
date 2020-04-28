@@ -4,14 +4,10 @@ Requires=gunicorn.socket
 After=network.target
 
 [Service]
-User=djangoadmin
+User=app
 Group=www-data
 WorkingDirectory=/home/app/btre_project
-ExecStart=/home/app/venv/bin/gunicorn \
-          --access-logfile - \
-          --workers 3 \
-          --bind unix:/run/gunicorn.sock \
-          btre.wsgi:application
+ExecStart=/home/app/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock btre.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
