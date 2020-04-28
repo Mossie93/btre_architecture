@@ -66,11 +66,11 @@
   ufw:
     rule: deny
     port: '53'
-# - name: Disallow root SSH access
-#   lineinfile: 
-#     dest: /etc/ssh/sshd_config
-#     regexp: "^PermitRootLogin"
-#     line: "PermitRootLogin no"
-#     state: present
-#   notify: Restart ssh
+- name: Disallow root SSH access
+  lineinfile: 
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+  notify: Restart SSH
 
