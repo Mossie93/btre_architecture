@@ -1,7 +1,7 @@
 ---
 - name: Install packages
   apt:
-    name: {{ item }}
+    name: "{{ item }}"
     state: present
     update_cache: yes
   with_items:
@@ -18,7 +18,7 @@
   authorized_key:
     user: app
     state: present
-    key: {{ app_user_public_ssh_key_path }}
+    key: "{{ app_user_public_ssh_key_path }}"
 - name: Create group admins
   group:
     name: admins
@@ -31,9 +31,9 @@
     append: yes
 - name: Upload admin SSH key
   authorized_key:
-    user: {{ admin_user }}
+    user: "{{ admin_user }}"
     state: present
-    key: {{ admin_user_public_ssh_key_path }}
+    key: "{{ admin_user_public_ssh_key_path }}"
 - name: Allow admin to use passwordless sudo
   lineinfile:
     path: /etc/sudoers
