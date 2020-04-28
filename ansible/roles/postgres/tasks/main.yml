@@ -9,7 +9,7 @@
     state: present
 - name: Add PostgreSQL 11 apt repo
   apt_repository:
-    repo: http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
     state: present
 - name: Install postgres
   apt:
