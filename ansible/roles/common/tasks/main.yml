@@ -18,7 +18,9 @@
   authorized_key:
     user: app
     state: present
-    key: "{{ app_user_public_ssh_key_path }}"
+    key: "{{ item }}"
+  with_file:
+    - "{{ app_user_public_ssh_key_path }}"
 - name: Create group admins
   group:
     name: admins
@@ -33,7 +35,9 @@
   authorized_key:
     user: "{{ admin_user }}"
     state: present
-    key: "{{ admin_user_public_ssh_key_path }}"
+    key: "{{ item }}"
+  with_file:
+    - "{{ admin_user_public_ssh_key_path }}"
 - name: Allow admin to use passwordless sudo
   lineinfile:
     path: /etc/sudoers
