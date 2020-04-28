@@ -1,38 +1,57 @@
 ---
 - name: Pull btre_project from github
   git:
-    repo: https://github.com/Mossie93/btre_architecture.git
-    dest: /home/app/btre_project
-- name: Ensure btre_project belongs to app user
-  file:
-    name: /home/app/btre_project
-    owner: app
-    state: directory  
+    repo: https://github.com/Mossie93/btre_project.git
+    dest: /home/app/btre_project  
 - name: Install gunicorn
   pip:
     chdir: /home/app/btre_project
     name: gunicorn
+    executable: pip3
+- name: Install virtualenv
+  pip:
+    chdir: /home/app/btre_project
+    name: virtualenv
+    executable: pip3
 - name: Install requirements
   pip:
     chdir: /home/app
     virtualenv: /home/app/venv
+    virtualenv_python: python3
     requirements: btre_project/requirements.txt
 - name: Upload settings file
   template:
     src: local_settings.py.j2
     dest: /home/app/btre_project/btre/local_settings.py
-- name: Create migrations
-  command: python manage.py makemigrations
-  args:
-    chdir: /home/app/btre_project
+- name: Ensure btre_project belongs to app user
+  file:
+    name: /home/app/btre_project
+    owner: app
+    group: app
+    recurse: yes
+    state: directory
 - name: Run migrations
-  command: python manage.py migrate
-  args:
-    chdir: /home/app/btre_project
+  become: yes
+  become_user: app
+  django_manage:
+    app_path: /home/app/btre_project
+    command: migrate
+    virtualenv: /home/app/venv
 - name: Create static files
-  command: python manage.py collectstatic
-  args:
-    chdir: /home/app/btre_project
+  become: yes
+  become_user: app
+  django_manage:
+    app_path: /home/app/btre_project
+    command: collectstatic
+    virtualenv: /home/app/venv
+- name: Upload gunicorn socket config file
+  template:
+    src: gunicorn.socket.j2
+    dest: /etc/systemd/system/gunicorn.socket
+- name: Upload gunicorn service config file
+  template:
+    src: gunicorn.service.j2
+    dest: /etc/systemd/system/gunicorn.service
 - name: Start gunicorn
   command: systemctl start gunicorn.socket
   become: yes
