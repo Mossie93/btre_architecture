@@ -3,16 +3,17 @@
   git:
     repo: https://github.com/Mossie93/btre_project.git
     dest: /home/app/btre_project  
-- name: Install gunicorn
-  pip:
-    chdir: /home/app/btre_project
-    name: gunicorn
-    executable: pip3
 - name: Install virtualenv
   pip:
     chdir: /home/app/btre_project
     name: virtualenv
     executable: pip3
+- name: Install gunicorn
+  pip:
+    chdir: /home/app/btre_project
+    name: gunicorn
+    virtualenv: /home/app/venv
+    virtualenv_python: python3
 - name: Install requirements
   pip:
     chdir: /home/app
@@ -23,9 +24,9 @@
   template:
     src: local_settings.py.j2
     dest: /home/app/btre_project/btre/local_settings.py
-- name: Ensure btre_project belongs to app user
+- name: Ensure /home/app belongs to app user
   file:
-    name: /home/app/btre_project
+    name: /home/app/
     owner: app
     group: app
     recurse: yes
